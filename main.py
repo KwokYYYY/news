@@ -17,7 +17,10 @@ class NewsPlugin(Star):
         try:
             async with session.get(API_URL) as response:
                 if response.status == 200:
+                    # 获取 Content-Type 并确保是字符串
                     content_type = response.headers.get('Content-Type', '')
+                    if isinstance(content_type, bytes):
+                        content_type = content_type.decode('utf-8')  # 转换为字符串
                     if content_type.startswith('image/'):
                         return await response.read()
                     else:
