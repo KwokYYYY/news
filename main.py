@@ -12,22 +12,19 @@ class NewsPlugin(Star):
     def __init__(self, context: Context):
         super().__init__(context)
 
-    async def fetch_image(self, session):
-        """从接口获取图片数据"""
+    async def verify_image(self, session):
+        """验证接口是否返回图片"""
         try:
             async with session.get(API_URL) as response:
                 if response.status == 200:
-                    # 获取 Content-Type 并确保是字符串
                     content_type = response.headers.get('Content-Type', '')
                     if isinstance(content_type, bytes):
-                        content_type = content_type.decode('utf-8')  # 转换为字符串
+                        content_type = content_type.decode('utf-8')
                     if content_type.startswith('image/'):
-                        return await response.read()
-                    else:
-                        return None
-                return None
+                        return True
+                return False
         except aiohttp.ClientError:
-            return None
+            return False
 
     @filter.command("今日新闻")
     async def news_command(self, event: AstrMessageEvent):
@@ -35,9 +32,8 @@ class NewsPlugin(Star):
         yield event.plain_result("正在获取今日新闻图片...")
 
         async with aiohttp.ClientSession() as session:
-            image_data = await self.fetch_image(session)
-            if image_data:
-                yield event.image_result(image_data)  # 只传入图片数据
+            if await self.verify_image(session):
+                yield event.image_result(API_URL)  # 直接传入 URL
             else:
                 yield event.plain_result("无法获取今日新闻图片，请稍后再试。")
 
