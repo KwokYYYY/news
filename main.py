@@ -7,7 +7,7 @@ import asyncio
 # 接口地址
 API_URL = "https://v.api.aa1.cn/api/60s-v3/"
 
-@register("今日新闻", "egg", "60秒国内新闻", "1.0.0", "https://github.com/bbpn-cn/headline")
+@register("今日新闻", "Your Name", "获取60秒读懂世界图片的插件", "1.0.0", "repo url")
 class NewsPlugin(Star):
     def __init__(self, context: Context):
         super().__init__(context)
@@ -34,7 +34,7 @@ class NewsPlugin(Star):
         async with aiohttp.ClientSession() as session:
             image_data = await self.fetch_image(session)
             if image_data:
-                yield event.image_result(image_data, "daily_news.jpg")
+                yield event.image_result(image_data)  # 只传入图片数据
             else:
                 yield event.plain_result("无法获取今日新闻图片，请稍后再试。")
 
