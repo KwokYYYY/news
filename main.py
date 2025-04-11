@@ -1,4 +1,4 @@
-"""用户输入 /News 获取60秒读懂世界图片"""
+"""用户输入 /news 获取60秒读懂世界图片"""
 from astrbot.api.event import filter, AstrMessageEvent, MessageEventResult
 from astrbot.api.star import Context, Star, register
 import aiohttp
@@ -26,9 +26,9 @@ class NewsPlugin(Star):
         except aiohttp.ClientError:
             return False
 
-    @filter.command("News")
+    @filter.command("news")
     async def news_command(self, event: AstrMessageEvent):
-        '''新闻查询指令，使用格式：/News'''
+        '''新闻查询指令，使用格式：/news'''
         yield event.plain_result("正在获取今日新闻...")
 
         async with aiohttp.ClientSession() as session:
