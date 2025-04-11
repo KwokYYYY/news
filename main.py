@@ -7,7 +7,7 @@ import asyncio
 # 接口地址
 API_URL = "https://v.api.aa1.cn/api/60s-v3/"
 
-@register("今日新闻", "egg", "60秒国内新闻", "1.0.0", "https://github.com/bbpn-cn/headline")
+@register("今日新闻", "KwokY", "60秒国内新闻", "1.0.0", "https://github.com/bbpn-cn/headline")
 class NewsPlugin(Star):
     def __init__(self, context: Context):
         super().__init__(context)
